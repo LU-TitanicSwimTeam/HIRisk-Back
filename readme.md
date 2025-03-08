@@ -1,7 +1,11 @@
-# Vanilla JavaScript App
+# Health Insurance Risk Calculator
 
-[Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps/overview) allows you to easily build JavaScript apps in minutes. Use this repo with the [quickstart](https://docs.microsoft.com/azure/static-web-apps/getting-started?tabs=vanilla-javascript) to build and customize a new static site.
+Rudra Patel, Ethan Myers, Ben Elier, Kolade Idris, Michael Poole
 
-This repo is used as a starter for a _very basic_ HTML web application using no front-end frameworks.
+rudrappatel@lewisu.edu,
 
-This repo has a dev container. This means if you open it inside a [GitHub Codespace](https://github.com/features/codespaces), or using [VS Code with the remote containers extension](https://code.visualstudio.com/docs/remote/containers), it will be opened inside a container with all the dependencies already installed.
+- A Web application that will calculate the health risk of a new insurance company customer
+
+# Key Features:
+
+# Getting Started:
