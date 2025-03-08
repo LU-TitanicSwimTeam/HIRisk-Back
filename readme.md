@@ -2,7 +2,7 @@
 
 Rudra Patel, Ethan Myers, Ben Elier, Kolade Idris, Michael Poole
 
-rudrappatel@lewisu.edu, MichaelJPoole@lewisu.edu,
+rudrappatel@lewisu.edu, MichaelJPoole@lewisu.edu, Koladeidris@lewius.edu
 
 - A Web application that will calculate the health risk of a new insurance company customer
 
