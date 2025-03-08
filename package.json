@@ -1,7 +1,24 @@
 {
   "name": "vanilla-basic",
   "version": "1.0.0",
-  "scripts": { 
-    "start": "sirv ./src public --cors --single --no-clear --port 8000"
+  "scripts": {
+    "start": "node index.js"
+  },
+  "description": "Rudra Patel, Ethan Myers, Ben Elier, Kolade Idris, Michael Poole",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LU-TitanicSwimTeam/HIRisk-Back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LU-TitanicSwimTeam/HIRisk-Back/issues"
+  },
+  "homepage": "https://github.com/LU-TitanicSwimTeam/HIRisk-Back#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
   }
 }
