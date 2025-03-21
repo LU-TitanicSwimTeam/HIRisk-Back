@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5500;
 
 
 // Middleware
@@ -30,68 +30,127 @@ app.get('/', (req, res) => {
 
 // bmi calculator function
 function calculateBMI(weight, height){
-    const weightKG = (weight * 0.45359237);
-    const heightMeters = (height * 0.0254);
-    return (weightKG / (heightMeters ** 2)).toFixed(1);
+
+    // Converting inputs to numbers if not already
+    const weightNum = Number(weight);
+    const heightNum = Number(height);
+
+    const weightKG = (weightNum * 0.45359237);
+    const heightMeters = (heightNum * 0.0254);
+
+    // Returning as a number for correct comparisions later on
+    return Number((weightKG / (heightMeters ** 2)).toFixed(1));
 }
 
 
 // Determining risk points
 function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory = [] }){
     
+    // Convert to Numbers if not already
+    const ageNum = Number(age);
+    const weightNum = Number(weight);
+    const heightNum = Number(height);
+
     let riskPoints = 0;
 
+    // For debugging purposes. REMOVE LATER
+    console.log(`Input values - Age: ${ageNum}, Weight: ${weightNum}, Height: ${heightNum}, Blood Pressure: ${bloodPressure}, Family History: ${familyHistory}`);
+
     // Age Risk
-    if (age <= 30) riskPoints += 0;
-    else if (age >= 31 && age >= 45) riskPoints += 10;
-    else if (age >= 46 && age <= 60) riskPoints += 20;
-    else riskPoints += 30;
+    if (ageNum < 30) {
+        riskPoints += 0;
+        // Debugging purposes. REMOVE LATER
+        console.log("Age risk points: 0");
+    } else if (ageNum < 45){
+        riskPoints += 10;
+        // Debugging purposes. REMOVE LATER
+        console.log("Age risk points: 10");
+    } else if (ageNum < 60){
+        riskPoints += 20;
+        // Debugging purposes. REMOVE LATER
+        console.log("Age risk points: 20");
+    } else {
+        riskPoints += 30;
+        // Debugging purposes. REMOVE LATER
+        console.log("Age risk points: 30");
+    }
 
     // BMI Risk
-    const bmi = calculateBMI(weight, height);
-    if (bmi >= 18.5 && bmi <= 24.9) riskPoints += 0;
-    else if (bmi >= 25.0 && bmi >= 29.9) riskPoints += 30;
-    else riskPoints += 75;
+    const bmi = calculateBMI(weightNum, heightNum);
+    if (bmi >= 18.5 && bmi <= 24.9) {
+        riskPoints += 0;
+        // Debugging purposes. REMOVE LATER
+        console.log("BMI risk points: 0");
+    } else if (bmi >= 25.0 && bmi <= 29.9){ 
+        riskPoints += 30
+        // Debugging purposes. REMOVE LATER
+        console.log("BMI risk points: 30");
+    } else{ 
+        riskPoints += 75
+        // Debugging purposes. REMOVE LATER
+        console.log("BMI risk points: 75");
+    };
 
 
     // Blood Pressure Risk
     const bpRisk = {
-        normal: 0,
-        elevated: 15,
-        "stage 1": 30,
-        "stage 2": 75,
-        crisis: 100
+        "normal": 0,
+        "elevated": 15,
+        "stage1": 30,
+        "stage2": 75,
+        "crisis": 100
     };
 
-    riskPoints += bpRisk[bloodPressure] || 0; // Just incase it's undefined
+    const bpPoints = bpRisk[bloodPressure] || 0; // Just incase it's undefined
+
+    // Debugging purposes. REMOVE LATER
+    console.log(`Blood Pressure risk points: ${bpPoints}`);
+
+    riskPoints += bpPoints;
 
 
     // Family History Risk
     const familyHistoryRisk = {
-        diabetes: 10,
-        cancer: 10,
-        "Alzheimer's": 10,
+        "diabetes": 10,
+        "cancer": 10,
+        "alzheimers": 10,
     };
 
+    let familyPoints = 0;
+
     familyHistory.forEach(condition => {
-        riskPoints += familyHistoryRisk[condition] || 0; // Just incase it's undefined
+        const points = familyHistoryRisk[condition] || 0; // Just incase it's undefined
+        familyPoints += points;
+
+        // Debugging purposes. REMOVE LATER
+        console.log(`Family History risk points: ${points}`);
+
     });
 
+    riskPoints += familyPoints;
+
+
+    // Debugging purposes. REMOVE LATER
+    console.log(`Total risk points: ${riskPoints}`);
 
     // Determining Results
-    let riskCategory = "Low Risk"
-
-    // if (riskPoints <= 50 && riskPoints < 100) riskCategory = "Moderate Risk";
-    // else if (riskPoints >= 100) riskCategory = "High Risk";
-    //
-    // return { riskPoints, riskCategory };
+    let riskCategory = "Low Risk";
 
     // replaced original with a bit more structured risk calculator.
-    if (riskPoints >= 20 && riskPoints <= 49) return {riskPoints, riskCategory}
-    else if (riskPoints >= 50 && riskPoints <= 74) riskCategory = "Moderate Risk"
-    else if (riskPoints >= 75 && riskPoints <= 100) riskCategory = "High Risk"
-    else riskCategory = "Un-insurable"
-    return { riskPoints, riskCategory }
+    if (riskPoints <= 20){
+        riskCategory = "Low Risk";
+    } else if (riskPoints <= 50){
+        riskCategory = "Moderate Risk";
+    } else if (riskPoints <= 75){
+        riskCategory = "High Risk";
+    } else {
+        riskCategory = "Uninsurable";
+    }
+
+    // Debugging purposes. REMOVE LATER
+    console.log(`Risk Category: ${riskCategory}`);
+
+    return { riskPoints, riskCategory };
 
 }
 
@@ -105,8 +164,11 @@ app.post('/api/calculate-risk', (req, res) =>{
         return res.status(400).json({error: "Please fill out all fields."});
     }
 
-    const height = heightFeet * 12 + heightInches;
-    const result = calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory: familyDiseases });
+    const heightFeetNum = Number(heightFeet);
+    const heightInchesNum = Number(heightInches);
+    const totalHeight = (heightFeetNum * 12) + heightInchesNum;
+
+    const result = calculateRiskPoints({ age, weight, height: totalHeight, bloodPressure, familyHistory: familyDiseases });
 
     const { riskPoints, riskCategory } = result;
 
@@ -118,4 +180,3 @@ app.post('/api/calculate-risk', (req, res) =>{
 app.listen(PORT, () => {
     console.log(`Backend API running on port ${PORT}!`);
 });
-
