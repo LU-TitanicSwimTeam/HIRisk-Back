@@ -38,9 +38,20 @@ app.post('/api/calculate-risk', (req, res) =>{
     const bmi = (weight / (heightInInches ** 2)) * 703;
 
     //Dummy Risk Calculation to see if works
-    const riskScore = bmi * 2;
+    const totalRiskPoints = Math.round(bmi * 2);
 
-    res.json({ riskScore });
+    // Categorizing Risk
+    let riskCategory;
+
+    if (totalRiskPoints > 50){
+        riskCategory = "High Risk";
+    } else if (totalRiskPoints > 25){
+        riskCategory = "Medium Risk";
+    } else {
+        riskCategory = "Low Risk";
+    }
+
+    res.json({ totalRiskPoints, riskCategory });
 })
 
 app.listen(PORT, () => {
