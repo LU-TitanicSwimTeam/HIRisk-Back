@@ -81,7 +81,7 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     // Determining Results
     let riskCategory = "Low Risk"
 
-    if (riskPoints >= 50 && riskPoints < 100) riskCategory = "Moderate Risk";
+    if (riskPoints <= 50 && riskPoints < 100) riskCategory = "Moderate Risk";
     else if (riskPoints >= 100) riskCategory = "High Risk";
 
     return { riskPoints, riskCategory };
