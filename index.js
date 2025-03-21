@@ -103,7 +103,7 @@ app.post('/api/calculate-risk', (req, res) =>{
 
     const { riskPoints, riskCategory } = result;
 
-    res.json({ riskPoints, riskCategory });
+    res.json({ totalRiskPoints: riskPoints, riskCategory });
 });
 
 
