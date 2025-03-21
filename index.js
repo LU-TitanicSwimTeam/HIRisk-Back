@@ -50,7 +50,7 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     // BMI Risk
     const bmi = calculateBMI(weight, height);
     if (bmi >= 18.5 && bmi <= 24.9) riskPoints += 0;
-    else if (bmi >= 25.0 && bmi >= 29.9) riskPoints += 30;
+    else if (bmi >= 25.0 && bmi <= 29.9) riskPoints += 30;
     else riskPoints += 75;
 
 
@@ -87,11 +87,18 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     // return { riskPoints, riskCategory };
 
     // replaced original with a bit more structured risk calculator.
-    if (riskPoints >= 20 && riskPoints <= 49) return {riskPoints, riskCategory}
-    else if (riskPoints >= 50 && riskPoints <= 74) riskCategory = "Moderate Risk"
-    else if (riskPoints >= 75 && riskPoints <= 100) riskCategory = "High Risk"
-    else riskCategory = "Un-insurable"
-    return { riskPoints, riskCategory }
+    if (riskPoints >= 20 && riskPoints <= 49) {
+        return {riskPoints, riskCategory}
+    } else if (riskPoints >= 50 && riskPoints <= 74) {
+        riskCategory = "Moderate Risk"
+        return { riskPoints, riskCategory }
+    } else if (riskPoints >= 75 && riskPoints <= 100) {
+        riskCategory = "High Risk"
+        return { riskPoints, riskCategory }
+    } else {
+        riskCategory = "Un-insurable"
+        return { riskPoints, riskCategory }
+    }
 
 }
 
