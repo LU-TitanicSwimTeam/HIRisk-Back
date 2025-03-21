@@ -42,35 +42,35 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     let riskPoints = 0;
 
     // Age Risk
-    if (age <= 30) riskPoints += 0;
-    else if (age >= 31 && age >= 45) riskPoints += 10;
-    else if (age >= 46 && age <= 60) riskPoints += 20;
+    if (age < 30) riskPoints += 0;
+    else if (age < 45) riskPoints += 10;
+    else if (age < 60) riskPoints += 20;
     else riskPoints += 30;
 
     // BMI Risk
     const bmi = calculateBMI(weight, height);
     if (bmi >= 18.5 && bmi <= 24.9) riskPoints += 0;
-    else if (bmi >= 25.0 && bmi >= 29.9) riskPoints += 30;
+    else if (bmi >= 25.0 && bmi <= 29.9) riskPoints += 30;
     else riskPoints += 75;
 
 
     // Blood Pressure Risk
     const bpRisk = {
-        normal: 0,
-        elevated: 15,
-        "stage 1": 30,
-        "stage 2": 75,
-        crisis: 100
+        "normal": 0,
+        "elevated": 15,
+        "stage1": 30,
+        "stage2": 75,
+        "crisis": 100
     };
 
     riskPoints += bpRisk[bloodPressure] || 0; // Just incase it's undefined
 
 
-    // Family History Risk
+    // Family History Risk. Keys are matching the frontend values for familyDiseases
     const familyHistoryRisk = {
-        diabetes: 10,
-        cancer: 10,
-        "Alzheimer's": 10,
+        "diabetes": 10,
+        "cancer": 10,
+        "alzheimers": 10,
     };
 
     familyHistory.forEach(condition => {
@@ -81,16 +81,16 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     // Determining Results
     let riskCategory = "Low Risk"
 
-    // if (riskPoints <= 50 && riskPoints < 100) riskCategory = "Moderate Risk";
-    // else if (riskPoints >= 100) riskCategory = "High Risk";
-    //
-    // return { riskPoints, riskCategory };
-
-    // replaced original with a bit more structured risk calculator.
-    if (riskPoints >= 20 && riskPoints <= 49) return {riskPoints, riskCategory}
-    else if (riskPoints >= 50 && riskPoints <= 74) riskCategory = "Moderate Risk"
-    else if (riskPoints >= 75 && riskPoints <= 100) riskCategory = "High Risk"
-    else riskCategory = "Un-insurable"
+    if (riskPoints <= 20){
+        riskCategory = "Low Risk";
+    } else if (riskPoints <= 50){
+        riskCategory = "Moderate Risk";
+    } else if (riskPoints <= 75){
+        riskCategory = "High Risk";
+    } else {
+        riskCategory = "Uninsurable";
+    }
+    
     return { riskPoints, riskCategory }
 
 }
@@ -118,4 +118,3 @@ app.post('/api/calculate-risk', (req, res) =>{
 app.listen(PORT, () => {
     console.log(`Backend API running on port ${PORT}!`);
 });
-
