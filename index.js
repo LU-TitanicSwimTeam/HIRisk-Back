@@ -28,6 +28,11 @@ app.get('/', (req, res) => {
 });
 
 
+//  ping route to wake the server
+app.get('/api/ping', (req, res) => {
+    res.json({ message: 'Ping API is awake and ready' });
+});
+
 // bmi calculator function
 function calculateBMI(weight, height){
 
