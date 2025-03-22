@@ -53,42 +53,25 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
 
     let riskPoints = 0;
 
-    // For debugging purposes. REMOVE LATER
-    console.log(`Input values - Age: ${ageNum}, Weight: ${weightNum}, Height: ${heightNum}, Blood Pressure: ${bloodPressure}, Family History: ${familyHistory}`);
-
     // Age Risk
     if (ageNum < 30) {
         riskPoints += 0;
-        // Debugging purposes. REMOVE LATER
-        console.log("Age risk points: 0");
     } else if (ageNum < 45){
         riskPoints += 10;
-        // Debugging purposes. REMOVE LATER
-        console.log("Age risk points: 10");
     } else if (ageNum < 60){
         riskPoints += 20;
-        // Debugging purposes. REMOVE LATER
-        console.log("Age risk points: 20");
     } else {
         riskPoints += 30;
-        // Debugging purposes. REMOVE LATER
-        console.log("Age risk points: 30");
     }
 
     // BMI Risk
     const bmi = calculateBMI(weightNum, heightNum);
     if (bmi >= 18.5 && bmi <= 24.9) {
         riskPoints += 0;
-        // Debugging purposes. REMOVE LATER
-        console.log("BMI risk points: 0");
     } else if (bmi >= 25.0 && bmi <= 29.9){ 
         riskPoints += 30
-        // Debugging purposes. REMOVE LATER
-        console.log("BMI risk points: 30");
     } else{ 
         riskPoints += 75
-        // Debugging purposes. REMOVE LATER
-        console.log("BMI risk points: 75");
     };
 
 
@@ -102,10 +85,6 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     };
 
     const bpPoints = bpRisk[bloodPressure] || 0; // Just incase it's undefined
-
-    // Debugging purposes. REMOVE LATER
-    console.log(`Blood Pressure risk points: ${bpPoints}`);
-
     riskPoints += bpPoints;
 
 
@@ -121,17 +100,9 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     familyHistory.forEach(condition => {
         const points = familyHistoryRisk[condition] || 0; // Just incase it's undefined
         familyPoints += points;
-
-        // Debugging purposes. REMOVE LATER
-        console.log(`Family History risk points: ${points}`);
-
     });
 
     riskPoints += familyPoints;
-
-
-    // Debugging purposes. REMOVE LATER
-    console.log(`Total risk points: ${riskPoints}`);
 
     // Determining Results
     let riskCategory = "Low Risk";
@@ -146,9 +117,6 @@ function calculateRiskPoints({ age, weight, height, bloodPressure, familyHistory
     } else {
         riskCategory = "Uninsurable";
     }
-
-    // Debugging purposes. REMOVE LATER
-    console.log(`Risk Category: ${riskCategory}`);
 
     return { riskPoints, riskCategory };
 
